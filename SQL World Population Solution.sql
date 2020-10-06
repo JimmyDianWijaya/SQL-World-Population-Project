@@ -1,41 +1,52 @@
--- To find out the years covered in the dataset
-SELECT DISTINCT year from population_years;
+-- How many entries in the countries table are from Africa?
+select continent, count(id)
+from countries
+where continent = 'Africa';
 
+-- What was the total population of the continent of Oceania in 2005?
+select a.continent, b.year, sum(b.population) as total_population 
+from countries a
+inner join population_years b
+on a.id = b.country_id
+where a.continent = 'Oceania' and b.year = 2005
+group by a.continent, b.year;
 
--- the largest population in Gabon country
-select max(population)
-from population_years
-where country = 'Gabon';
+-- What is the average population of countries in South America in 2003?
+select a.continent, b.year, avg(b.population) as average_population 
+from countries a
+inner join population_years b
+on a.id = b.country_id
+where a.continent = 'South America' and b.year = 2003
+group by a.continent, b.year;
 
--- the lowest 10 population countries in 2005
-select country, min(population)
-from population_years
-group by country
-order by 2
-limit 10;
+-- What country had the smallest population in 2007?
+select a. name, a.continent, b.year, b.population
+from countries a
+inner join population_years b
+on a.id = b.country_id
+where b.year = 2007 and b.population is not null
+order by b.population asc
+limit 5;
 
--- the countries with a population of over 100 million in the year 2010
-select distinct country, population
-from population_years
-where population > 100 AND year = 2010
-group by country
-order by population;
+-- What is the average population of Poland during the time period covered by this dataset?
+select a.name, a.continent, b.year, round(avg(b.population),2) as average_population
+from countries a
+inner join population_years b
+on a.id = b.country_id
+where b.population is not null and a.name = 'Poland'
+group by a.name, a.continent, b.year
+order by average_population asc;
 
--- the number of countries with islands in their name
-select count(distinct country)
-from population_years
-where country like '%Islands%';
+-- How many countries have the word “The” in their name?
+select count(*)
+from countries
+where name like '%The%';
 
--- the difference in population between 2000 and 2010 in Indonesia
-with table_1 as (
-  select *
-  from population_years
-  where year = 2000 AND country = 'Indonesia'),
-  table_2 as (
-    select *
-    from population_years
-    where year = 2010 AND country = 'Indonesia')
-select table_1.country as country, table_1.population as population_in_2000, table_2.population as population_in_2010, table_1.population - table_2.population as difference_population
-from table_1
-inner join table_2
-on table_1.country = table_2.country;
+-- What was the total population of each continent in 2010?
+select a.continent, b.year, round(sum(b.population),2) as total_population
+from countries a
+inner join population_years b
+on a.id = b.country_id
+where b.population is not null and b.year = 2010
+group by a.continent, b.year
+order by total_population asc;
