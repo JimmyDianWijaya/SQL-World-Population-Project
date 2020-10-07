@@ -14,4 +14,6 @@ The questions are :
 6. How many countries have the word 'The' in their name?
 7. What was the total population of each continent in 2010?
 
-This project was completed using SQL in the SQLite.
+This project was completed using SQL in the SQLite and the result of the analysis is presented using PowerPoint. 
+
+Feel free to download the SQL and PowerPoint file to view my SQL code and the insights I extracted from the data. 
